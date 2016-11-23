@@ -92,6 +92,14 @@
       .iw_table_icon {
         text-align: right;
       }
+       #content-window {
+        float: left;
+        font-family: 'Roboto','sans-serif';
+        height: 100%;
+        line-height: 30px;
+        padding-left: 10px;
+        width: 19%;
+      }
     </style>
   </head>
 
@@ -150,7 +158,7 @@
         </table>
       </div>
     </div>
-
+   <div id="content-window"></div>
     <script>
 // This example uses the autocomplete feature of the Google Places API.
 // It allows the user to find all hotels in a given place, within a given
@@ -214,6 +222,22 @@ function initMap() {
   // Add a DOM event listener to react when the user selects a country.
   document.getElementById('country').addEventListener(
       'change', setAutocompleteCountry);
+
+   var kmlLayer = new google.maps.KmlLayer({
+    url: 'http://t654321ina.github.io/GraduationProject/lonlat.kml',
+    suppressInfoWindows: true,
+    map: map
+  });
+
+  kmlLayer.addListener('click', function(kmlEvent) {
+    var text = kmlEvent.featureData.description;
+    showInContentWindow(text);
+  });
+
+  function showInContentWindow(text) {
+    var sidediv = document.getElementById('content-window');
+    sidediv.innerHTML = text;
+  }
 }
 
 // When the user selects a city, get the place details for the city and
