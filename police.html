@@ -227,7 +227,7 @@ function initMap() {
       'change', setAutocompleteCountry);
 
    var kmlLayer = new google.maps.KmlLayer({
-    url: 'http://t654321ina.github.io/GraduationProject/lonlat.kml',
+    url: 'http://t654321ina.github.io/GraduationProject/lonlatwithcircle.kml',
     suppressInfoWindows: true,
     map: map
   });
@@ -259,18 +259,8 @@ for (i = 0; (splitName[0]!="")&(i < splitName.length); i++)
 
  latlngset = new google.maps.LatLng(lat, long);
 
- var marker = new google.maps.Circle({  
-    strokeColor: '#FF0000',
-      strokeOpacity: 0.8,
-      strokeWeight: 2,
-      fillColor: '#FF0000',
-      fillOpacity: 0.35,
-      map: map,
-      center: latlngset ,
-      radius:10000,
-      title: loan , 
-      position: latlngset  
-        
+  var marker = new google.maps.Marker({
+          map: map, title: loan , position: latlngset
         });
     //    map.setCenter(marker.getPosition())
 
