@@ -192,6 +192,9 @@ var countries = {
     zoom: 8
   }
 };
+var splitLat = ",23,22,24".replace(",","").split(",");
+var splitLon = ",120,121,121".replace(",","").split(",");
+var splitName = ",A,B,C".replace(",","").split(",");
 
 function initMap() {
   map = new google.maps.Map(document.getElementById('map'), {
@@ -222,7 +225,7 @@ function initMap() {
   // Add a DOM event listener to react when the user selects a country.
   document.getElementById('country').addEventListener(
       'change', setAutocompleteCountry);
-
+/*
    var kmlLayer = new google.maps.KmlLayer({
     url: 'http://t654321ina.github.io/GraduationProject/lonlat.kml',
     suppressInfoWindows: true,
@@ -238,8 +241,46 @@ function initMap() {
     var sidediv = document.getElementById('content-window');
     sidediv.innerHTML = text;
   }
+*/
+setMarkers(map);
 }
 
+ function setMarkers(map){
+
+      var marker, i
+
+for (i = 0; (splitName[0]!="")&(i < splitName.length); i++)
+ {
+
+ var loan = i;
+ var lat = splitLat[i];
+ var long = splitLon[i];
+ var name =  splitName[i];
+
+ latlngset = new google.maps.LatLng(lat, long);
+
+  var marker = new google.maps.Marker({
+          map: map, title: loan , position: latlngset
+        });
+        map.setCenter(marker.getPosition())
+
+
+        var content = name
+
+  var infowindow = new google.maps.InfoWindow()
+
+
+
+
+google.maps.event.addListener(marker,'click', (function(marker,content,infowindow){
+    return function() {
+        infowindow.setContent(content);
+        infowindow.open(map,marker);
+    };
+})(marker,content,infowindow));
+
+
+  }}
 // When the user selects a city, get the place details for the city and
 // zoom the map in on the city.
 function onPlaceChanged() {

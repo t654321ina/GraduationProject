@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>Info windows</title>
+    <style>
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      #map {
+        height: 100%;
+      }
+    </style>
+</head>
+<body>
+<div id="map"></div>
+<script>
+
+// This example displays a marker at the center of Australia.
+// When the user clicks the marker, an info window opens.
+var splitLat = ",23,22,24".replace(",","").split(",");
+var splitLon = ",120,121,121".replace(",","").split(",");
+var splitName = ",A,B,C".replace(",","").split(",");
+var markers = [];
+function initMap() {
+
+var i ;
+//Map
+for(i = 0;i <splitName.length;i++){
+  var map = new google.maps.Map(document.getElementById('map'), {
+    zoom: 4,
+    center: {lat: splitLat[i]*1, lng: splitLon[0]*1}
+  });
+  
+  var contentString = '<div id="content">'+splitName[i]+'</div>';
+
+  var infowindow = new google.maps.InfoWindow();
+
+  markers[i] = new google.maps.Marker({
+    position: {lat: splitLat[i]*1, lng: splitLon[i]*1},
+    map: map,
+    title: 'Uluru (Ayers Rock)'
+  });
+  google.maps.event.addListener(markers[i],'click', showInfoWindow);
+
+}
+
+function showInfoWindow() {
+  var marker = this;
+
+      infowindow.setContent(contentString);
+      
+        infoWindow.open(map, marker);
+       
+      ;
+}
+}
+    </script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD1Tm2N_Rrx6Hr6WdZHkAPaStdUVaPWBgI&signed_in=true&libraries=places&callback=initMap"
+        async defer></script>
+</body>
+</html>
