@@ -1,0 +1,87 @@
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+<style type="text/css">
+  html { height: 100% }
+  body { height: 100%; margin: 0; padding: 0 }
+  #map_canvas { height: 100% }
+</style>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD1Tm2N_Rrx6Hr6WdZHkAPaStdUVaPWBgI&signed_in=true&libraries=places&callback=initMap"
+        async defer></script>
+<script type="text/javascript">
+
+var splitLat = ",23,22,24".replace(",","").split(",");
+var splitLon = ",120,121,121".replace(",","").split(",");
+var splitName = ",A,B,C".replace(",","").split(",");
+  function initialize() {
+
+    var myOptions = {
+      center: new google.maps.LatLng(23, 120),
+      zoom: 8,
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+
+    };
+    var map = new google.maps.Map(document.getElementById("default"),
+        myOptions);
+
+    setMarkers(map)
+
+  }
+
+
+
+  function setMarkers(map){
+
+      var marker, i
+
+for (i = 0; i < splitName.length; i++)
+ {  
+
+ var loan = i;
+ var lat = splitLat[i];
+ var long = splitLon[i];
+ var name =  splitName[i];
+
+ latlngset = new google.maps.LatLng(lat, long);
+
+  var marker = new google.maps.Circle({  
+    strokeColor: '#FF0000',
+      strokeOpacity: 0.8,
+      strokeWeight: 2,
+      fillColor: '#FF0000',
+      fillOpacity: 0.35,
+      map: map,
+      center: latlngset ,
+      radius:10000,
+      title: loan , 
+      position: latlngset  
+        
+        });
+  
+      //  map.setCenter(marker.getPosition())
+
+
+        var content = "Loan Number: " + loan +  '</h3>' + "Address: " + name     
+
+  var infowindow = new google.maps.InfoWindow()
+
+
+
+
+google.maps.event.addListener(marker,'click', (function(marker,content,infowindow){ 
+    return function() {
+        infowindow.setContent(content);
+        infowindow.open(map,marker);
+    };
+})(marker,content,infowindow));  
+
+
+  }
+  }
+
+
+
+  </script>
+ </head>
+ <body onload="initialize()">
+  <div id="default" style="width:100%; height:100%"></div>
+ </body>
+  </html>
