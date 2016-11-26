@@ -206,11 +206,10 @@ function initMap() {
     zoomControl: true,
     streetViewControl: false
   });
-/*
-  infoWindow = new google.maps.InfoWindow({
+   infoWindow = new google.maps.InfoWindow({
     content: document.getElementById('info-content'),
-    map: map
-  });*/
+   // map: map
+  });
     // Try HTML5 geolocation.
         if (navigator.geolocation) {
           navigator.geolocation.getCurrentPosition(function(position) {
@@ -225,13 +224,13 @@ function initMap() {
            // infoWindow.setPosition(pos);
            // infoWindow.setContent('Location found.');
           //  map.setCenter(pos);
-          }, function() {
+          }/*, function() {
             handleLocationError(true, infoWindow, map.getCenter());
-          });
-        } else {
+          }*/);
+        } /*else {
           // Browser doesn't support Geolocation
           handleLocationError(false, infoWindow, map.getCenter());
-        }
+        }*/
         // Create the DIV to hold the control and call the CenterControl() constructor
   // passing in this DIV.
   var centerControlDiv = document.createElement('div');
@@ -337,17 +336,17 @@ for (i = 0; (splitName[0]!="")&(i < splitName.length); i++)
 
         var content = name
 
-  var infowindow = new google.maps.InfoWindow()
+  var infowindowkml = new google.maps.InfoWindow()
 
 
 
 
-google.maps.event.addListener(marker,'click', (function(marker,content,infowindow){
+google.maps.event.addListener(marker,'click', (function(marker,content,infowindowkml){
     return function() {
-        infowindow.setContent(content);
-        infowindow.open(map,marker);
+        infowindowkml.setContent(content);
+        infowindowkml.open(map,marker);
     };
-})(marker,content,infowindow));
+})(marker,content,infowindowkml));
 
 
   }}
@@ -366,6 +365,7 @@ function onPlaceChanged() {
 
 // Search for hotels in the selected city, within the viewport of the map.
 function search() {
+ 
   var search = {
     bounds: map.getBounds(),
     types: ['police']
