@@ -221,6 +221,16 @@ function initMap() {
     title: 'Hello World!',
     icon:'http://labs.google.com/ridefinder/images/mm_20_blue.png'
   });
+ var centerCircle = new google.maps.Circle({
+      strokeColor: '#0000FF',
+      strokeOpacity: 0.8,
+      strokeWeight: 0,
+      fillColor: '#0000FF',
+      fillOpacity: 0.2,
+      map: map,
+      center: pos,
+      radius: 1000
+    });
            // infoWindow.setPosition(pos);
            // infoWindow.setContent('Location found.');
           //  map.setCenter(pos);
