@@ -1,95 +1,110 @@
 <!DOCTYPE html>
-<html> 
-<head> 
-  <meta http-equiv="content-type" content="text/html; charset=UTF-8"> 
-  <title>Google Maps Multiple Markers</title> 
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>Custom controls</title>
+    <style>
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      #map {
+        height: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+    <script>
+var map,infoWindow;
+var pos = {lat: 23.5, lng: 120.5};
 
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD1Tm2N_Rrx6Hr6WdZHkAPaStdUVaPWBgI&signed_in=true&libraries=places&callback=initMap"
-        async defer></script>
-</head> 
-<body>
-  <div id="map" style="width: 500px; height: 400px;"></div>
+
+function CenterControl(controlDiv, map) {
+
+  // Set CSS for the control border.
+  var controlUI = document.createElement('div');
+  controlUI.style.backgroundColor = '#fff';
+  controlUI.style.border = '2px solid #fff';
+  controlUI.style.borderRadius = '3px';
+  controlUI.style.boxShadow = '0 2px 6px rgba(0,0,0,.3)';
+  controlUI.style.cursor = 'pointer';
+  controlUI.style.marginBottom = '22px';
+  controlUI.style.textAlign = 'center';
+  controlUI.title = 'Click to recenter the map';
+  controlDiv.appendChild(controlUI);
+
+  // Set CSS for the control interior.
+  var controlText = document.createElement('div');
+  controlText.style.color = 'rgb(25,25,25)';
+  controlText.style.fontFamily = 'Roboto,Arial,sans-serif';
+  controlText.style.fontSize = '16px';
+  controlText.style.lineHeight = '38px';
+  controlText.style.paddingLeft = '5px';
+  controlText.style.paddingRight = '5px';
+  controlText.innerHTML = 'Center Map';
+  controlUI.appendChild(controlText);
+
+  // Setup the click event listeners: simply set the map to Chicago.
+  controlUI.addEventListener('click', function() {
+    map.setCenter(pos);
+  });
+
+}
+
+function initMap() {
+  map = new google.maps.Map(document.getElementById('map'), {
+    zoom: 10,
+    center: pos
+  });
+
+
   
-  <script>
-    // Define your locations: HTML content for the info window, latitude, longitude
-    var locations = [
-      ['<h4>Bondi Beach</h4>', -33.890542, 151.274856],
-      ['<h4>Coogee Beach</h4>', -33.923036, 151.259052],
-      ['<h4>Cronulla Beach</h4>', -34.028249, 151.157507],
-      ['<h4>Manly Beach</h4>', -33.80010128657071, 151.28747820854187],
-      ['<h4>Maroubra Beach</h4>', -33.950198, 151.259302]
-    ];
-    
-    // Setup the different icons and shadows
-    var iconURLPrefix = 'http://maps.google.com/mapfiles/ms/icons/';
-    
-    var icons = [
-      iconURLPrefix + 'red-dot.png',
-      iconURLPrefix + 'green-dot.png',
-      iconURLPrefix + 'blue-dot.png',
-      iconURLPrefix + 'orange-dot.png',
-      iconURLPrefix + 'purple-dot.png',
-      iconURLPrefix + 'pink-dot.png',      
-      iconURLPrefix + 'yellow-dot.png'
-    ]
-    var iconsLength = icons.length;
+  infoWindow = new google.maps.InfoWindow({
+    content: document.getElementById('info-content'),
+    map: map
+  });
+    // Try HTML5 geolocation.
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(function(position) {
+             pos = {lat: position.coords.latitude,lng: position.coords.longitude};
+    var centermarker = new google.maps.Marker({
+    position:pos,
+    map: map,
+    title: 'Hello World!'
+  });
 
-    var map = new google.maps.Map(document.getElementById('map'), {
-      zoom: 10,
-      center: new google.maps.LatLng(-37.92, 151.25),
-      mapTypeId: google.maps.MapTypeId.ROADMAP,
-      mapTypeControl: false,
-      streetViewControl: false,
-      panControl: false,
-      zoomControlOptions: {
-         position: google.maps.ControlPosition.LEFT_BOTTOM
-      }
-    });
-
-    var infowindow = new google.maps.InfoWindow({
-      maxWidth: 160
-    });
-
-    var markers = new Array();
-    
-    var iconCounter = 0;
-    
-    // Add the markers and infowindows to the map
-    for (var i = 0; i < locations.length; i++) {  
-      var marker = new google.maps.Marker({
-        position: new google.maps.LatLng(locations[i][1], locations[i][2]),
-        map: map,
-        icon: icons[iconCounter]
-      });
-
-      markers.push(marker);
-
-      google.maps.event.addListener(marker, 'click', (function(marker, i) {
-        return function() {
-          infowindow.setContent(locations[i][0]);
-          infowindow.open(map, marker);
+            infoWindow.setPosition(pos);
+            infoWindow.setContent('Location found.');
+          //  map.setCenter(pos);
+          }, function() {
+            handleLocationError(true, infoWindow, map.getCenter());
+          });
+        } else {
+          // Browser doesn't support Geolocation
+          handleLocationError(false, infoWindow, map.getCenter());
         }
-      })(marker, i));
-      
-      iconCounter++;
-      // We only have a limited number of possible icon colors, so we may have to restart the counter
-      if(iconCounter >= iconsLength) {
-        iconCounter = 0;
-      }
-    }
+  // Create the DIV to hold the control and call the CenterControl() constructor
+  // passing in this DIV.
+  var centerControlDiv = document.createElement('div');
+  var centerControl = new CenterControl(centerControlDiv, map);
 
-    function autoCenter() {
-      //  Create a new viewpoint bound
-      var bounds = new google.maps.LatLngBounds();
-      //  Go through each...
-      for (var i = 0; i < markers.length; i++) {  
-                bounds.extend(markers[i].position);
+  centerControlDiv.index = 1;
+  map.controls[google.maps.ControlPosition.TOP_CENTER].push(centerControlDiv);
+}
+function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+        infoWindow.setPosition(pos);
+        infoWindow.setContent(browserHasGeolocation ?
+                              'Error: The Geolocation service failed.' :
+                              'Error: Your browser doesn\'t support geolocation.');
+                              
       }
-      //  Fit these bounds to the map
-      map.fitBounds(bounds);
-    }
-    autoCenter();
-  </script> 
 
-</body>
+    </script>
+  
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD1Tm2N_Rrx6Hr6WdZHkAPaStdUVaPWBgI&signed_in=true&libraries=places&callback=initMap"
+        async defer></script>
+  </body>
 </html>

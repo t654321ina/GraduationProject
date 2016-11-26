@@ -195,21 +195,51 @@ var countries = {
 var splitLat = ",23,22,24".replace(",","").split(",");
 var splitLon = ",120,121,121".replace(",","").split(",");
 var splitName = ",A,B,C".replace(",","").split(",");
+var pos = countries['tw'].center;
 
 function initMap() {
   map = new google.maps.Map(document.getElementById('map'), {
     zoom: countries['tw'].zoom,
-    center: countries['tw'].center,
+    center: pos,
     mapTypeControl: false,
     panControl: false,
-    zoomControl: false,
+    zoomControl: true,
     streetViewControl: false
   });
-
+/*
   infoWindow = new google.maps.InfoWindow({
-    content: document.getElementById('info-content')
+    content: document.getElementById('info-content'),
+    map: map
+  });*/
+    // Try HTML5 geolocation.
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(function(position) {
+             pos = {lat: position.coords.latitude,lng: position.coords.longitude};
+  
+ var centermarker = new google.maps.Marker({
+    position:pos,
+    map: map,
+    title: 'Hello World!',
+    icon:'http://labs.google.com/ridefinder/images/mm_20_blue.png'
   });
+           // infoWindow.setPosition(pos);
+           // infoWindow.setContent('Location found.');
+          //  map.setCenter(pos);
+          }, function() {
+            handleLocationError(true, infoWindow, map.getCenter());
+          });
+        } else {
+          // Browser doesn't support Geolocation
+          handleLocationError(false, infoWindow, map.getCenter());
+        }
+        // Create the DIV to hold the control and call the CenterControl() constructor
+  // passing in this DIV.
+  var centerControlDiv = document.createElement('div');
+  var centerControl = new CenterControl(centerControlDiv, map);
 
+  centerControlDiv.index = 1;
+  map.controls[google.maps.ControlPosition.TOP_RIGHT].push(centerControlDiv);
+  //----
   // Create the autocomplete object and associate it with the UI input control.
   // Restrict the search to the default country, and to place type "cities".
   autocomplete = new google.maps.places.Autocomplete(
@@ -227,11 +257,12 @@ function initMap() {
       'change', setAutocompleteCountry);
 
    var kmlLayer = new google.maps.KmlLayer({
-    url: 'http://t654321ina.github.io/GraduationProject/lonlatwithcircle.kml',
-    suppressInfoWindows: true,
+    url: 'http://t654321ina.github.io/GraduationProject/map1.kmz',
+    preserveViewport: true,
+    //suppressInfoWindows: true,
     map: map
   });
-
+/*
   kmlLayer.addListener('click', function(kmlEvent) {
     var text = kmlEvent.featureData.description;
     showInContentWindow(text);
@@ -240,14 +271,53 @@ function initMap() {
   function showInContentWindow(text) {
     var sidediv = document.getElementById('content-window');
     sidediv.innerHTML = text;
-  }
-
+  }*/
+ 
 setMarkers(map);
 }
 
+  function CenterControl(controlDiv, map) {
+
+  // Set CSS for the control border.
+  var controlUI = document.createElement('div');
+  controlUI.style.backgroundColor = '#fff';
+  controlUI.style.border = '2px solid #fff';
+  controlUI.style.borderRadius = '3px';
+  controlUI.style.boxShadow = '0 2px 6px rgba(0,0,0,.3)';
+  controlUI.style.cursor = 'pointer';
+  controlUI.style.marginBottom = '22px';
+  controlUI.style.textAlign = 'center';
+  controlUI.title = 'Click to recenter the map';
+  controlDiv.appendChild(controlUI);
+
+  // Set CSS for the control interior.
+  var controlText = document.createElement('div');
+  controlText.style.color = 'rgb(25,25,25)';
+  controlText.style.fontFamily = 'Roboto,Arial,sans-serif';
+  controlText.style.fontSize = '16px';
+  controlText.style.lineHeight = '38px';
+  controlText.style.paddingLeft = '5px';
+  controlText.style.paddingRight = '5px';
+  controlText.innerHTML = '定位';
+  controlUI.appendChild(controlText);
+
+  // Setup the click event listeners: simply set the map to Chicago.
+  controlUI.addEventListener('click', function() {
+    map.setCenter(pos);
+    map.setZoom(12);
+
+      var mark = new google.maps.Marker({
+    position: {lat: 24, lng: 121},
+    map: map,
+    title: 'Hello World!'
+  });
+  });
+
+}
  function setMarkers(map){
 
-      var marker, i
+      var marker, i;
+   
 
 for (i = 0; (splitName[0]!="")&(i < splitName.length); i++)
  {
@@ -260,7 +330,7 @@ for (i = 0; (splitName[0]!="")&(i < splitName.length); i++)
  latlngset = new google.maps.LatLng(lat, long);
 
   var marker = new google.maps.Marker({
-          map: map, title: loan , position: latlngset
+          map: map, title: loan , position: latlngset,icon:'http://labs.google.com/ridefinder/images/mm_20_red.png'
         });
     //    map.setCenter(marker.getPosition())
 
