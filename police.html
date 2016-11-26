@@ -347,7 +347,16 @@ google.maps.event.addListener(marker,'click', (function(marker,content,infowindo
         infowindowkml.open(map,marker);
     };
 })(marker,content,infowindowkml));
-
+var markCircle = new google.maps.Circle({
+      strokeColor: '#FF0000',
+      strokeOpacity: 0.8,
+      strokeWeight: 0,
+      fillColor: '#FF0000',
+      fillOpacity: 0.2,
+      map: map,
+      center: latlngset,
+      radius: 1000
+    });
 
   }}
 // When the user selects a city, get the place details for the city and
