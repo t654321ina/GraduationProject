@@ -25,11 +25,10 @@
         height: 100%
       }
       #controlbutton{
+
         position: absolute;
-        top:10px;
-        left:10px;
-        width: 10%;
-        height:10%;
+
+      
         z-index: 5;
        
       }
@@ -116,10 +115,7 @@
   </head>
 
   <body>
-<div id="controlbutton">
-      <br><input type="image" src="https://t654321ina.github.io/GraduationProject/location.png" 
-      name="image" width="60" height="60"><br>
-    </div>
+
     <div id="findhotels">
       找尋警察局:
     </div>
@@ -138,7 +134,11 @@
         <option value="do">南</option>
       </select>
     </div>
-
+     <input id="controlbutton"  type="image" 
+     src="https://t654321ina.github.io/GraduationProject/location1.png" 
+      name="image" width="40px" height="40px"
+      style=" right:5px; top: 10px; ">
+  
     <div id="map"></div>
 
     <div id="listing">
@@ -303,30 +303,12 @@ setMarkers(map);
   function CenterControl(controlDiv, map) {
 
   // Set CSS for the control border.
-  var controlUI = document.createElement('div');
-  controlUI.style.backgroundColor = '#fff';
-  controlUI.style.border = '12px solid #fff';
-  controlUI.style.borderRadius = '3px';
-  controlUI.style.boxShadow = '0 2px 6px rgba(0,0,0,.3)';
-  controlUI.style.cursor = 'pointer';
-  controlUI.style.marginBottom = '22px';
-  controlUI.style.textAlign = 'center';
-  controlUI.title = 'Click to recenter the map';
-  controlDiv.appendChild(controlUI);
 
-  // Set CSS for the control interior.
-  var controlText = document.createElement('div');
-  controlText.style.color = 'rgb(25,25,25)';
-  controlText.style.fontFamily = 'Roboto,Arial,sans-serif';
-  controlText.style.fontSize = '16px';
-  controlText.style.lineHeight = '20px';
-  controlText.style.paddingLeft = '5px';
-  controlText.style.paddingRight = '5px';
-  controlText.innerHTML = '+';
-  controlUI.appendChild(controlText);
+
 
   // Setup the click event listeners: simply set the map to Chicago.
-  controlUI.addEventListener('click', function() {
+  cButton = document.getElementById('controlbutton')
+  cButton.addEventListener('click', function() {
     map.setCenter(pos);
     map.setZoom(12);
 
