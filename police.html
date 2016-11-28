@@ -35,28 +35,29 @@
       #listing {
         position: absolute;
         width: 30%;
-        height: 90%;
+        height: 75%;
         overflow: auto;
         right:1%;
-        top: 10%;
+        top: 80px;
         cursor: pointer;
         overflow-x: hidden;
       }
       #findhotels {
         position: absolute;
-        text-align: right;
-        width: 100px;
-         top: 10px;
-        font-size: 14px;
+        text-align: left;
+        width: 50px;
+         top: 12px;
+        font-size: 20px;
         padding: 4px;
+        left: 1%;
         z-index: 5;
        
       }
       #locationField {
         position: absolute;
-        width: 200px;
-        height: 28px;
-        left: 108px;
+        width: 250px;
+        height: 40px;
+        left: 55px;
         top: 10px;
         z-index: 5;
         
@@ -71,6 +72,7 @@
       }
       #autocomplete {
         width: 100%;
+
       }
       #country {
         width: 100%;
@@ -116,12 +118,12 @@
 
   <body>
 
-    <div id="findhotels">
-      找尋警察局:
+    <div id="findhotels" style="font-size:15px;">
+      搜尋:
     </div>
 
     <div id="locationField">
-      <input id="autocomplete" placeholder="輸入..." type="text" />
+      <input id="autocomplete" placeholder="輸入..." style="font-size:15px;padding:5px;border:0px" type="text" />
     </div>
 
     <div id="controls">
@@ -137,7 +139,7 @@
      <input id="controlbutton"  type="image" 
      src="https://t654321ina.github.io/GraduationProject/location1.png" 
       name="image" width="40px" height="40px"
-      style=" right:5px; top: 10px; ">
+      style=" right:50px; top: 10px; ">
   
     <div id="map"></div>
 
@@ -219,6 +221,9 @@ function initMap() {
     mapTypeControl: false,
     panControl: false,
     zoomControl: true,
+    zoomControlOptions: {
+        position: google.maps.ControlPosition.TOP_RIGHT
+    },
     streetViewControl: false
   });
    infoWindow = new google.maps.InfoWindow({
